@@ -3,12 +3,12 @@ package dev.ugurcan.mvi_playground.presentation.newslist
 import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import dev.ugurcan.mvi_playground.data.State
-import dev.ugurcan.mvi_playground.repo.NewsRepository
+import dev.ugurcan.mvi_playground.repo.news.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.ofType
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import io.reactivex.rxkotlin.plusAssign
 
 class NewsListViewModel(private val newsRepository: NewsRepository) :
     BaseViewModel<NewsListAction, NewsListState>() {

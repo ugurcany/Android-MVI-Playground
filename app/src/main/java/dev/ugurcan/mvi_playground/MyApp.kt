@@ -2,27 +2,14 @@ package dev.ugurcan.mvi_playground
 
 import android.app.Application
 import com.ww.roxie.Roxie
-import dev.ugurcan.mvi_playground.presentation.newslist.NewsListViewModel
-import dev.ugurcan.mvi_playground.repo.NewsRepository
-import dev.ugurcan.mvi_playground.repo.NewsRepositoryImpl
+import dev.ugurcan.mvi_playground.di.repoModule
+import dev.ugurcan.mvi_playground.di.vmModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
-import org.koin.dsl.module
 import timber.log.Timber
 
 class MyApp : Application() {
-    private val repoModule = module {
-        // single instance of NewsRepository
-        single<NewsRepository> { NewsRepositoryImpl() }
-    }
-
-    private val vmModule = module {
-        // NewsListViewModel ViewModel
-        viewModel { NewsListViewModel(get()) }
-    }
-
     override fun onCreate() {
         super.onCreate()
         // Timber
@@ -37,7 +24,7 @@ class MyApp : Application() {
             }
         })
 
-        // start Koin!
+        // Koin
         startKoin {
             androidLogger()
             // Android context

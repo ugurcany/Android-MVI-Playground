@@ -1,13 +1,13 @@
 package dev.ugurcan.mvi_playground.presentation.newslist
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
 import dev.ugurcan.mvi_playground.R
 import dev.ugurcan.mvi_playground.data.News
 import dev.ugurcan.mvi_playground.data.State
@@ -19,8 +19,7 @@ class NewsListActivity : AppCompatActivity() {
     // Lazy Inject ViewModel
     private val viewModel: NewsListViewModel by viewModel()
 
-    //create the ItemAdapter holding your Items
-    private val itemAdapter = ItemAdapter<News>()
+    private val adapter = NewsListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +34,11 @@ class NewsListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = FastAdapter.with(itemAdapter)
+        recyclerView.layoutManager = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_PORTRAIT -> LinearLayoutManager(this)
+            else -> GridLayoutManager(this, 2)
+        }
+        recyclerView.adapter = adapter
     }
 
     private fun renderState(state: NewsListState) {
@@ -58,6 +60,6 @@ class NewsListActivity : AppCompatActivity() {
 
     private fun renderData(newsList: List<News>) {
         loadingIndicator.visibility = View.GONE
-        itemAdapter.set(newsList)
+        adapter.setNewData(newsList.toMutableList())
     }
 }
