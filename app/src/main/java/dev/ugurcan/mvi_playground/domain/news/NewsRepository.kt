@@ -4,5 +4,5 @@ import dev.ugurcan.mvi_playground.data.News
 import io.reactivex.Observable
 
 interface NewsRepository {
-    fun loadAll(keyword: String): Observable<List<News>>
+    fun loadAll(keyword: String, pageSize: Int, page: Int): Observable<List<News>>
 }

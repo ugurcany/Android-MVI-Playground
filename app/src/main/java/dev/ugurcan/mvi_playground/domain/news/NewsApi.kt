@@ -12,7 +12,9 @@ interface NewsApi {
         @Query("apiKey") apiKey: String,
         @Query("q") query: String,
         @Query("language") language: String,
-        @Query("sortBy") sortBy: String
+        @Query("sortBy") sortBy: String,
+        @Query("pageSize") pageSize: Int,
+        @Query("page") page: Int
     ): Observable<NewsListResponse>
 
 }

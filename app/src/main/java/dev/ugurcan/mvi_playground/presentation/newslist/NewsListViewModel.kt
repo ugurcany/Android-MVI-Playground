@@ -15,6 +15,9 @@ class NewsListViewModel(private val newsRepository: NewsRepository) :
 
     override val initialState = NewsListState(state = State.IDLE)
 
+    val pageSize: Int = 10
+    var page: Int = 1
+
     private val reducer: Reducer<NewsListState, NewsListChange> = { state, change ->
         when (change) {
             is NewsListChange.Loading -> state.copy(
@@ -40,7 +43,7 @@ class NewsListViewModel(private val newsRepository: NewsRepository) :
     private fun bindActions() {
         val loadNewsChange = actions.ofType<NewsListAction.LoadNewsList>()
             .switchMap {
-                newsRepository.loadAll(it.keyword)
+                newsRepository.loadAll(keyword = it.keyword, pageSize = pageSize, page = page)
                     .subscribeOn(Schedulers.io())
                     .map<NewsListChange> { newsList -> NewsListChange.Data(newsList) }
                     .defaultIfEmpty(NewsListChange.Data(emptyList()))

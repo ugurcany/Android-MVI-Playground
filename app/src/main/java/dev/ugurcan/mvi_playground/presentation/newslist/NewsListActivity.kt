@@ -30,14 +30,23 @@ class NewsListActivity : AppCompatActivity() {
             state?.let { renderState(state) }
         })
 
-        loadData()
+        loadData(false)
     }
 
-    private fun loadData() {
+    private fun loadData(requestNextPage: Boolean) {
+        if (requestNextPage) viewModel.page++
+        else viewModel.page = 1
         viewModel.dispatch(NewsListAction.LoadNewsList("android"))
     }
 
     private fun setupRecyclerView() {
+        adapter.loadMoreModule?.let {
+            it.setOnLoadMoreListener {
+                loadData(true)
+            }
+            it.isAutoLoadMore = true
+        }
+
         recyclerView.layoutManager = when (resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> LinearLayoutManager(this)
             else -> GridLayoutManager(this, 2)
@@ -47,7 +56,7 @@ class NewsListActivity : AppCompatActivity() {
 
     private fun setupSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener {
-            loadData()
+            loadData(false)
         }
     }
 
@@ -64,12 +73,22 @@ class NewsListActivity : AppCompatActivity() {
     }
 
     private fun renderError(errorMessage: String) {
+        adapter.loadMoreModule?.loadMoreComplete()
         swipeRefreshLayout.isRefreshing = false
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     private fun renderData(newsList: List<News>) {
         swipeRefreshLayout.isRefreshing = false
-        adapter.setNewData(newsList.toMutableList())
+
+        if (viewModel.page == 1)
+            adapter.setNewData(newsList.toMutableList())
+        else {
+            adapter.addData(newsList.toMutableList())
+            if (newsList.size < viewModel.pageSize)
+                adapter.loadMoreModule?.loadMoreEnd()
+            else
+                adapter.loadMoreModule?.loadMoreComplete()
+        }
     }
 }

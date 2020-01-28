@@ -10,10 +10,10 @@ import dev.ugurcan.mvi_playground.data.News
 import java.text.DateFormat
 
 class NewsListAdapter :
-    BaseQuickAdapter<News, BaseViewHolder>(R.layout.view_newslist_item) , LoadMoreModule {
+    BaseQuickAdapter<News, BaseViewHolder>(R.layout.view_newslist_item), LoadMoreModule {
 
     override fun convert(helper: BaseViewHolder, item: News?) {
-        helper.setText(R.id.textViewTitle, item?.title)
+        helper.setText(R.id.textViewTitle, "#${helper.adapterPosition + 1} - ${item?.title}")
         helper.setText(R.id.textViewDescription, item?.description)
         helper.setText(R.id.textViewDate, DateFormat.getInstance().format(item?.date))
         helper.getView<AppCompatImageView>(R.id.imageViewThumb).load(item?.image) {
@@ -23,6 +23,4 @@ class NewsListAdapter :
             error(R.drawable.ic_placeholder)
         }
     }
-
-
 }
