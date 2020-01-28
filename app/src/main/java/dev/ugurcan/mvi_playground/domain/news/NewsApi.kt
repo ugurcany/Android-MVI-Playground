@@ -1,4 +1,4 @@
-package dev.ugurcan.mvi_playground.repo.news
+package dev.ugurcan.mvi_playground.domain.news
 
 import dev.ugurcan.mvi_playground.data.NewsListResponse
 import io.reactivex.Observable

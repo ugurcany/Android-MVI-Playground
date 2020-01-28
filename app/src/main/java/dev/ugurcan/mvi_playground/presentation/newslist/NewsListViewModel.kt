@@ -3,7 +3,7 @@ package dev.ugurcan.mvi_playground.presentation.newslist
 import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import dev.ugurcan.mvi_playground.data.State
-import dev.ugurcan.mvi_playground.repo.news.NewsRepository
+import dev.ugurcan.mvi_playground.domain.news.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.ofType
 import io.reactivex.rxkotlin.plusAssign
@@ -40,11 +40,11 @@ class NewsListViewModel(private val newsRepository: NewsRepository) :
     private fun bindActions() {
         val loadNewsChange = actions.ofType<NewsListAction.LoadNewsList>()
             .switchMap {
-                newsRepository.loadAll()
+                newsRepository.loadAll(it.keyword)
                     .subscribeOn(Schedulers.io())
-                    .map<NewsListChange> { NewsListChange.Data(it) }
+                    .map<NewsListChange> { newsList -> NewsListChange.Data(newsList) }
                     .defaultIfEmpty(NewsListChange.Data(emptyList()))
-                    .onErrorReturn { NewsListChange.Error(it) }
+                    .onErrorReturn { throwable -> NewsListChange.Error(throwable) }
                     .startWith(NewsListChange.Loading)
             }
 

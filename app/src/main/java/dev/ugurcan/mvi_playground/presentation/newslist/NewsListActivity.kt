@@ -2,7 +2,6 @@ package dev.ugurcan.mvi_playground.presentation.newslist
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -25,12 +24,17 @@ class NewsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_newslist)
         setupRecyclerView()
+        setupSwipeRefreshLayout()
 
         viewModel.observableState.observe(this, Observer { state ->
             state?.let { renderState(state) }
         })
 
-        viewModel.dispatch(NewsListAction.LoadNewsList)
+        loadData()
+    }
+
+    private fun loadData() {
+        viewModel.dispatch(NewsListAction.LoadNewsList("android"))
     }
 
     private fun setupRecyclerView() {
@@ -39,6 +43,12 @@ class NewsListActivity : AppCompatActivity() {
             else -> GridLayoutManager(this, 2)
         }
         recyclerView.adapter = adapter
+    }
+
+    private fun setupSwipeRefreshLayout() {
+        swipeRefreshLayout.setOnRefreshListener {
+            loadData()
+        }
     }
 
     private fun renderState(state: NewsListState) {
@@ -50,16 +60,16 @@ class NewsListActivity : AppCompatActivity() {
     }
 
     private fun renderLoading() {
-        loadingIndicator.visibility = View.VISIBLE
+        swipeRefreshLayout.isRefreshing = true
     }
 
     private fun renderError(errorMessage: String) {
-        loadingIndicator.visibility = View.GONE
+        swipeRefreshLayout.isRefreshing = false
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     private fun renderData(newsList: List<News>) {
-        loadingIndicator.visibility = View.GONE
+        swipeRefreshLayout.isRefreshing = false
         adapter.setNewData(newsList.toMutableList())
     }
 }

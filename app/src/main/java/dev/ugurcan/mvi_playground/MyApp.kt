@@ -2,7 +2,7 @@ package dev.ugurcan.mvi_playground
 
 import android.app.Application
 import com.ww.roxie.Roxie
-import dev.ugurcan.mvi_playground.di.repoModule
+import dev.ugurcan.mvi_playground.di.newsModule
 import dev.ugurcan.mvi_playground.di.vmModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -30,7 +30,7 @@ class MyApp : Application() {
             // Android context
             androidContext(this@MyApp)
             // modules
-            modules(listOf(vmModule, repoModule))
+            modules(listOf(vmModule, newsModule))
         }
     }
 }
