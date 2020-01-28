@@ -22,11 +22,13 @@ class NewsListViewModel(private val newsRepository: NewsRepository) :
         when (change) {
             is NewsListChange.Loading -> state.copy(
                 state = State.LOADING,
-                newsList = emptyList()
+                newsList = emptyList(),
+                errorMessage = ""
             )
             is NewsListChange.Data -> state.copy(
                 state = State.DATA,
-                newsList = change.newsList
+                newsList = change.newsList,
+                errorMessage = ""
             )
             is NewsListChange.Error -> state.copy(
                 state = State.ERROR,

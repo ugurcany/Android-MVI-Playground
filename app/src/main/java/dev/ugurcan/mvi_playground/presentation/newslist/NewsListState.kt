@@ -5,7 +5,7 @@ import dev.ugurcan.mvi_playground.data.News
 import dev.ugurcan.mvi_playground.data.State
 
 data class NewsListState(
-    val newsList: List<News> = listOf(),
+    val newsList: List<News> = emptyList(),
     val state: State = State.IDLE,
     val errorMessage: String = ""
 ) : BaseState

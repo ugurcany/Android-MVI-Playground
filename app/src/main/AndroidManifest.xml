@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".presentation.newslist.NewsListActivity">
+        <activity android:name="dev.ugurcan.mvi_playground.presentation.newslist.NewsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
