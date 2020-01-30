@@ -6,14 +6,16 @@ import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
+import dev.ugurcan.mvi_playground.RxTestSchedulerRule
 import dev.ugurcan.mvi_playground.data.News
 import dev.ugurcan.mvi_playground.data.State
 import dev.ugurcan.mvi_playground.domain.news.NewsRepository
-import dev.ugurcan.mvi_playground.RxTestSchedulerRule
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyString
 import java.util.*
 
 class NewsListViewModelTest {
@@ -42,7 +44,7 @@ class NewsListViewModelTest {
         val newsList = listOf(News("title", "description", Date(), "image"))
         val successState = NewsListState(newsList = newsList, state = State.DATA)
 
-        whenever(newsRepo.loadAll("keyword", 1, 1))
+        whenever(newsRepo.loadAll(anyString(), anyInt(), anyInt()))
             .thenReturn(Observable.just(newsList))
 
         // WHEN
@@ -60,10 +62,11 @@ class NewsListViewModelTest {
     @Test
     fun `Given news list failed to load, when action LoadNewsList is received, then state contains error`() {
         // GIVEN
-        val errorState = NewsListState(errorMessage = "Some err!", state = State.ERROR)
+        val errMsg = "Err!"
+        val errorState = NewsListState(errorMessage = errMsg, state = State.ERROR)
 
-        whenever(newsRepo.loadAll("keyword", 1, 1))
-            .thenReturn(Observable.error(RuntimeException()))
+        whenever(newsRepo.loadAll(anyString(), anyInt(), anyInt()))
+            .thenReturn(Observable.error(Throwable(message = errMsg)))
 
         // WHEN
         testSubject.dispatch(NewsListAction.LoadNewsList("keyword"))
