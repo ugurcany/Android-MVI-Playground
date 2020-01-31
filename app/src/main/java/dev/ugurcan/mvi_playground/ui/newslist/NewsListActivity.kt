@@ -1,4 +1,4 @@
-package dev.ugurcan.mvi_playground.presentation.newslist
+package dev.ugurcan.mvi_playground.ui.newslist
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.ugurcan.mvi_playground.R
 import dev.ugurcan.mvi_playground.data.News
 import dev.ugurcan.mvi_playground.data.State
+import dev.ugurcan.mvi_playground.presentation.newslist.NewsListAction
+import dev.ugurcan.mvi_playground.presentation.newslist.NewsListState
+import dev.ugurcan.mvi_playground.presentation.newslist.NewsListViewModel
 import kotlinx.android.synthetic.main.activity_newslist.*
 import org.koin.android.viewmodel.ext.android.viewModel
 

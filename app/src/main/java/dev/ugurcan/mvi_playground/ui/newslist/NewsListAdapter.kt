@@ -1,4 +1,4 @@
-package dev.ugurcan.mvi_playground.presentation.newslist
+package dev.ugurcan.mvi_playground.ui.newslist
 
 import androidx.appcompat.widget.AppCompatImageView
 import coil.api.load
